@@ -1,2 +1,2 @@
 # todo
-test todo list project
+Pet project Go
