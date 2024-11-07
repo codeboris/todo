@@ -9,8 +9,8 @@ type Handler struct {
 	services *service.Service
 }
 
-func NewHandler(service *service.Service) *Handler {
-	return &Handler{services: service}
+func NewHandler(services *service.Service) *Handler {
+	return &Handler{services: services}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
@@ -18,8 +18,8 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	auth := router.Group("/auth")
 	{
-		auth.POST("/sing-in", h.signIn)
-		auth.POST("/sing-up", h.signUp)
+		auth.POST("/sign-in", h.signIn)
+		auth.POST("/sign-up", h.signUp)
 	}
 
 	api := router.Group("/api")
