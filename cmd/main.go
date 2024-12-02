@@ -10,7 +10,6 @@ import (
 	"github.com/codeboris/todo/pkg/handler"
 	"github.com/codeboris/todo/pkg/repository"
 	"github.com/codeboris/todo/pkg/service"
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -20,7 +19,7 @@ import (
 // @version 1.0
 // @description API Server for TodoList Application
 
-// @host localhost:8000
+// @host localhost:8080
 // @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth
@@ -32,16 +31,12 @@ func main() {
 		logrus.Fatalf("error initializing configs %s", err.Error())
 	}
 
-	if err := godotenv.Load(); err != nil {
-		logrus.Fatalf("error loading env variables: %s", err.Error())
-	}
-
 	db, err := repository.NewPostgresDB(repository.Config{
-		Host:     viper.GetString("db.host"),
-		Port:     viper.GetString("db.port"),
-		Username: viper.GetString("db.username"),
-		Password: os.Getenv("DB_PGSQL_PASSWORD"),
-		DBName:   viper.GetString("db.dbname"),
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		Username: os.Getenv("DB_USERNAME"),
+		Password: os.Getenv("DB_PASSWORD"),
+		DBName:   os.Getenv("DB_NAME"),
 		SSLMode:  viper.GetString("db.sslmode"),
 	})
 

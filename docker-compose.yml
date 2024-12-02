@@ -1,0 +1,39 @@
+
+services:
+  todo-app:
+    build: .
+    container_name: todo-app
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    environment:
+      - GO_ENV=development
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:latest
+    container_name: todo-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=12345
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+  migrate:
+    image: migrate/migrate
+    container_name: todo-migrate
+    volumes:
+      - ./schema:/schema
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
